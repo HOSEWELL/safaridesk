@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN!}
           clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
           authorizationParams={{
-            redirect_uri:"#/callback",
+            redirect_uri:"https://safaridesk-beta.vercel.app/callback",
             audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
             scope: "openid profile email",
           }}
