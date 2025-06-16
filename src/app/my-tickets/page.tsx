@@ -17,17 +17,25 @@ interface Booking {
 
 export default function MyTicketsPage() {
   const router = useRouter();
-  const BaseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://127.0.0.1:8000";
+  const BaseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    "https://safaridesk-backend.onrender.com/api";
 
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const token = localStorage.getItem("access_token");
     const email = localStorage.getItem("user_email");
 
+    console.log("Token from storage:", token);
+    console.log("Email from storage:", email);
+
     if (!token || !email) {
+      console.warn("Redirecting to login due to missing token/email");
       router.push("/auth/login");
       return;
     }
@@ -47,7 +55,7 @@ export default function MyTicketsPage() {
   }, [BaseUrl, router]);
 
   return (
-    <div  id="mytickets" className="p-6">
+    <div id="my-tickets" className="p-6">
       <h1 className="text-2xl font-bold mb-6">My Tickets</h1>
 
       {loading ? (

@@ -11,7 +11,7 @@ interface LoginForm {
 }
 
 export default function Login() {
-  const BaseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://127.0.0.1:8000";
+  const BaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const router = useRouter();
 
   const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
@@ -88,7 +88,7 @@ export default function Login() {
         </div>
         <div className="text-center">
           <h1 className="text-2xl font-semibold">Login here</h1>
-          <p className="text-sm text-gray-600">✋ Welcome back, you've been missed!</p>
+          <p className="text-sm text-gray-600">✋ Welcome back, you&apos;ve been missed!</p>
         </div>
         <input
           type="email"
@@ -150,7 +150,7 @@ export default function Login() {
         </button>
         <div className="text-center space-y-2 flex flex-col items-center">
           <p className="text-sm text-gray-600">
-            Don&apos;t have an account? <Link href="/auth/role" className="text-[#00C767]">Register</Link>
+            Don&apos;t have an account? <Link href="/auth/register" className="text-[#00C767]">Register</Link>
           </p>
         </div>
       </form>

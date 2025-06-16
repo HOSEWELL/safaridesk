@@ -7,12 +7,12 @@ interface Ticket {
   id: number;
   departure: string;
   destination: string;
-  date_of_departure: string; 
+  date_of_departure: string;
 }
 
 export default function TicketsPage() {
   const router = useRouter();
-  const BaseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://127.0.0.1:8000";
+  const BaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [filteredTickets, setFilteredTickets] = useState<Ticket[]>([]);
@@ -24,7 +24,6 @@ export default function TicketsPage() {
   const [bookingSuccess, setBookingSuccess] = useState<string | null>(null);
   const [search, setSearch] = useState({ from: "", to: "" });
 
-  // Load tickets and filter out expired ones
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (!token) {
@@ -41,7 +40,6 @@ export default function TicketsPage() {
       .then((data: Ticket[]) => {
         const today = new Date();
 
-        // Only include future dates
         const validTickets = data.filter((ticket) => {
           const ticketDate = new Date(ticket.date_of_departure);
           return ticketDate >= today;
@@ -54,7 +52,6 @@ export default function TicketsPage() {
       .finally(() => setLoading(false));
   }, [BaseUrl, router]);
 
-  // Apply search filtering
   useEffect(() => {
     const filtered = tickets.filter(
       (ticket) =>
@@ -95,11 +92,16 @@ export default function TicketsPage() {
       }
 
       setBookingSuccess("Ticket booked successfully!");
+      localStorage.setItem("user_email", form.email);
       setBookingError(null);
       setForm({ name: "", phone: "", email: "" });
       setBookingTicketId(null);
-    } catch (err: any) {
-      setBookingError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setBookingError(err.message);
+      } else {
+        setBookingError("An unexpected error occurred.");
+      }
       setBookingSuccess(null);
     }
   };
@@ -109,22 +111,24 @@ export default function TicketsPage() {
       <h1 className="text-2xl font-bold mb-6">Available Tickets</h1>
 
       {/* Search section */}
-      <div className="flex gap-4 mb-6">
-        <label className="font-medium text-gray-700">Search for a Ticket</label>
-        <input
-          type="text"
-          placeholder="From"
-          value={search.from}
-          onChange={(e) => setSearch({ ...search, from: e.target.value })}
-          className="border px-3 py-2 rounded w-[1/2]"
-        />
-        <input
-          type="text"
-          placeholder="To (Destination)"
-          value={search.to}
-          onChange={(e) => setSearch({ ...search, to: e.target.value })}
-          className="border px-3 py-2 rounded w-[1/2]"
-        />
+      <div className="mb-6">
+        <label className="block mb-2 font-medium text-gray-700">Search for a Ticket</label>
+        <div className="flex flex-col md:flex-row gap-4">
+          <input
+            type="text"
+            placeholder="From"
+            value={search.from}
+            onChange={(e) => setSearch({ ...search, from: e.target.value })}
+            className="border px-3 py-2 rounded w-full md:w-1/2"
+          />
+          <input
+            type="text"
+            placeholder="To (Destination)"
+            value={search.to}
+            onChange={(e) => setSearch({ ...search, to: e.target.value })}
+            className="border px-3 py-2 rounded w-full md:w-1/2"
+          />
+        </div>
       </div>
 
       {/* Tickets Table */}

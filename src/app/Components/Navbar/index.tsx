@@ -53,7 +53,7 @@ export default function NavBar() {
     <nav className="flex justify-between items-center mx-1 md:mx-5 py-3 text-sm relative px-4 md:px-10">
       {/* Logo */}
       <div>
-        <Link href="/">
+        <Link href="/home">
           <Image src="/logo.png" width={100} height={25} alt="logo" />
         </Link>
       </div>
@@ -62,14 +62,14 @@ export default function NavBar() {
       <div className="hidden md:flex space-x-6 items-center">
         <Link href="/home" className={`px-2 py-1 ${activeClass("/home")}`}>Home</Link>
         <Link href="/tickets" className={`px-2 py-1 ${activeClass("/tickets")}`}>Tickets</Link>
-        <Link href="/mytickets" className={`px-2 py-1 ${activeClass("/mytickets")}`}>My_Tickets</Link>
+        <Link href="/my-tickets" className={`px-2 py-1 ${activeClass("/my-tickets")}`}>My_Tickets</Link>
 
       </div>
 
       {/* Authentication Icon - Desktop */}
       <div className="hidden md:flex items-center relative">
         {isAuthenticated ? (
-          <Link href="/profile">
+          <Link href="/auth/login">
             <Image 
               src={"/profile.png"}
               width={40} height={32} 
