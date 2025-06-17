@@ -18,8 +18,7 @@ interface Booking {
 export default function MyTicketsPage() {
   const router = useRouter();
   const BaseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    "https://safaridesk-backend.onrender.com/api";
+    process.env.NEXT_PUBLIC_BASE_URL;
 
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -72,7 +71,7 @@ export default function MyTicketsPage() {
               className="bg-white shadow-lg border rounded-xl p-4 flex flex-col gap-2"
             >
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Ticket #{booking.ticket.id}</span>
+                <span className="text-sm text-gray-500">Ticket {booking.ticket.id}</span>
                 <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">
                   {booking.ticket.date_of_departure}
                 </span>
